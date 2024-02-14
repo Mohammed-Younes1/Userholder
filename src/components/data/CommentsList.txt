@@ -1,0 +1,21 @@
+import Cards from "../Cards";
+
+
+function CommentsList({ commentsL,loadedUsers }) {
+  return (
+    <ul className="grid grid-cols-1 md:grid-cols-3">
+      {commentsL.map((comment,index) => {
+        return (
+            <Cards
+              key={comment.id}
+              id={comment.id}
+              name={comment.name}
+              company={loadedUsers[1]}
+              body={comment.body}
+            />
+          )
+      })}
+    </ul>
+  );
+}
+export default CommentsList;

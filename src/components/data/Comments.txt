@@ -1,0 +1,41 @@
+import { useEffect, useState } from "react";
+import Cards from "../Cards";
+import CommentsList from "./CommentsList";
+
+function Comments() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedComments, setLoadedComments] = useState([]);
+  const [loadedUsers, setLoadedUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/comments")
+      .then((response) => response.json())
+      .then((data) => {
+        setIsLoading(false);
+        setLoadedComments(data);
+      });
+  }, []);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((data) => {
+        setIsLoading(false);
+        setLoadedUsers(data);
+      });
+  }, []);
+
+
+
+  if (isLoading) {
+    <section>
+      <p>Loading . . . . . . </p>
+    </section>;
+  }
+  return (
+    <div>
+      <h1>this is</h1>
+      <CommentsList commentsL={loadedComments} loadedUsers={loadedUsers.map(({company})=>company.name)}/>
+    </div>
+  );
+}
+export default Comments;
