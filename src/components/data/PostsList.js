@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Cards from "../Cards";
-import Posts from "./Posts";
+import Posts from "../Posts";
 
 function PostsList() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedPosts, setLoadedPosts] = useState([]);
   const [loadedUsers, setLoadedUsers] = useState([]);
   const [comments, setComments] = useState([]);
+  const [usersObj, setUsersObj] = useState({}); // Declare usersObj state
 
   useEffect(() => {
     Promise.all([
@@ -17,26 +18,40 @@ function PostsList() {
         response.json()
       ),
       fetch("https://jsonplaceholder.typicode.com/comments").then((response) =>
-      response.json()
-    ),
+        response.json()
+      ),
     ])
-      .then(([posts, users,comments]) => {
-        console.log(posts);
-        console.log(users);
-        console.log(comments)
-        setIsLoading(false); // Set isLoading to false when both posts and users are loaded
+      .then(([posts, users, comments]) => {
+        setIsLoading(false);
+
         setLoadedPosts(posts);
+        const postObj = Object.fromEntries(
+          posts.map((post) => [post.id, post])
+        );
+
         setLoadedUsers(users);
+        const usersObj = Object.fromEntries(
+          users.map((user) => [user.id, user])
+        );
+        setUsersObj(usersObj); // Set usersObj state here
+
         setComments(comments);
+        const commentsObj = Object.fromEntries(
+          comments.map((comment) => [comment.id, comment])
+        );
       })
       .catch((error) => console.error("Error loading data:", error));
   }, []);
 
   const getUser = (userId) => {
-    const user = loadedUsers.find((user) => user.id === userId);
-    return user ? user : null;
-  }
+    return usersObj[userId] || null;
+  };
 
+  // const getUser = (userId) => {
+  //   const user = loadedUsers.find((user) => user.id === userId);
+  //   console.log(user)
+  //   return user ? user : null;
+  // }
   return (
     <>
       {isLoading ? (
@@ -48,8 +63,8 @@ function PostsList() {
               key={post.id}
               title={post.title}
               body={post.body}
-              name={getUser(post.userId).name}
               companyName={getUser(post.userId).company.name}
+              name={getUser(post.userId).name}
               comments={comments}
               postId={post.id}
             />
