@@ -1,6 +1,6 @@
 import * as React from "react"
 
-const Userholder = (props) => (
+const UserholderSVG = (props) => (
   <svg
     height={40}
     width={40}
@@ -15,4 +15,4 @@ const Userholder = (props) => (
   </svg>
 )
 
-export default Userholder
+export default UserholderSVG
