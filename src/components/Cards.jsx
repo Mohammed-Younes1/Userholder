@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import Comment from "./Comment";
 import "../../src/App.css";
+import Posts from "./Posts";
+import Backdrop from "./Backdrop";
 
 function Cards({ body, name, companyName, comments, postId }) {
   const [isClicked, setIsClicked] = useState(false);
 
   const clickCommentsButton = () => {
+    // setIsClicked((pre)=>!pre);
     setIsClicked(!isClicked);
   };
 
@@ -23,15 +25,16 @@ function Cards({ body, name, companyName, comments, postId }) {
             <p className="text-gray-500">{companyName}</p>
           </div>
         </div>
-        {/* className="truncate" */}
-        <div className="flex text-left px-10 py-[10px]">
+        <div className="flex text-left px-5 py-[10px]">
           <p className="overflow-hidden text-sm max-h-[120px] w-[250px] truncate-3-lines">
             {body}
           </p>
         </div>
         <div className="flex ">
           <button onClick={clickCommentsButton}>Comments</button>
-          {isClicked && <Comment comments={comments} postId={postId}  name={name}/>}
+          {isClicked && <Backdrop click={clickCommentsButton} />}
+          {isClicked && <Posts comments={comments} postId={postId} name={name}/>}
+     
         </div>
       </div>
     </div>
@@ -39,16 +42,3 @@ function Cards({ body, name, companyName, comments, postId }) {
 }
 
 export default Cards;
-
-
- {/* {isClicked && (
-          <div>
-            {comments.map((comment) => {
-              if (postId === comment.postId) {
-                return <h3 className="ml-[-40px]"key={comment.id}>{comment.body}</h3>;
-              } else {
-                return null;
-              }
-            })}
-          </div>
-        )} */}
