@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../src/App.css";
 import Posts from "./Posts";
 import Backdrop from "./Backdrop";
-
-function Cards({ body, name, companyName, comments, postId }) {
+// comments
+function Cards({ body, name, companyName, comments, id, Idpost }) {
   const [isClicked, setIsClicked] = useState(false);
+  const [fetchedComments, setFetchedComments] = useState([]);
+
+  useEffect(() => {
+    if (!isClicked) {
+
+      fetch(`https://jsonplaceholder.typicode.com/comments?postId=${Idpost}`)
+        .then((response) => response.json())
+        .then((postIdComments) => {
+          setFetchedComments(postIdComments)
+        });
+    } else {
+      console.log("closing");
+    }
+  }, [isClicked, Idpost]);
 
   const clickCommentsButton = () => {
-    // setIsClicked((pre)=>!pre);
-    setIsClicked(!isClicked);
+    setIsClicked((prev) => !prev);
+    // setIsClicked(!isClicked);
   };
-
+  //https://jsonplaceholder.typicode.com/posts?_start=5&_limit=5
   return (
     <div className="p-6">
       <div className="bg-gray-100 max-w-lg max-h-[280px] h-[250px] shadow-md rounded-md p-6 ml-2 mr-2">
@@ -33,8 +47,9 @@ function Cards({ body, name, companyName, comments, postId }) {
         <div className="flex ">
           <button onClick={clickCommentsButton}>Comments</button>
           {isClicked && <Backdrop click={clickCommentsButton} />}
-          {isClicked && <Posts comments={comments} postId={postId} name={name}/>}
-     
+          {isClicked && (
+            <Posts comments={fetchedComments} Idpost={Idpost} name={name} />
+          )}
         </div>
       </div>
     </div>

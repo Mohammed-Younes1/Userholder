@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Cards from "../Cards";
-import Posts from "../Posts";
+
 
 function PostsList() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedPosts, setLoadedPosts] = useState([]);
-  const [loadedUsers, setLoadedUsers] = useState([]);
   const [comments, setComments] = useState([]);
   const [usersObj, setUsersObj] = useState({}); // Declare usersObj state
-
+  
   useEffect(() => {
     Promise.all([
       fetch("https://jsonplaceholder.typicode.com/posts").then((response) =>
@@ -29,7 +28,6 @@ function PostsList() {
           posts.map((post) => [post.id, post])
         );
 
-        setLoadedUsers(users);
         const usersObj = Object.fromEntries(
           users.map((user) => [user.id, user])
         );
@@ -52,6 +50,7 @@ function PostsList() {
   //   console.log(user)
   //   return user ? user : null;
   // }
+  
   return (
     <>
       {isLoading ? (
@@ -66,7 +65,8 @@ function PostsList() {
               companyName={getUser(post.userId).company.name}
               name={getUser(post.userId).name}
               comments={comments}
-              postId={post.id}
+              Idpost={post.id}
+              // postId={comments.id}
             />
           ))}
         </ul>
