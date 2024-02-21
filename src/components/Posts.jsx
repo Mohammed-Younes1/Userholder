@@ -1,7 +1,17 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import Comment from "./Comment";
 
-function Posts({ comments, Idpost, name, isLoading }) {
+
+function Posts({ comments, Idpost, name, isLoading,setIsLoading }) {
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 200); 
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
     <div>
       <div className="z-[60] fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] flex items-center justify-center inset-0">

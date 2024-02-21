@@ -6,18 +6,19 @@ import Backdrop from "./Backdrop";
 function Cards({ body, name, companyName, comments, id, Idpost }) {
   const [isClicked, setIsClicked] = useState(false);
   const [fetchedComments, setFetchedComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isClicked) {
+      setIsLoading(true); 
       fetch(`https://jsonplaceholder.typicode.com/comments?postId=${Idpost}`)
         .then((response) => response.json())
         .then((postIdComments) => {
           setFetchedComments(postIdComments);
-          setIsLoading(false);
+          // setIsLoading(false);
         })
         .catch((error) => {
-          setIsLoading(false);
+          // setIsLoading(false);
           console.error("Error fetching comments:", error);
         });
     } else {
@@ -53,7 +54,7 @@ function Cards({ body, name, companyName, comments, id, Idpost }) {
           <button onClick={clickCommentsButton}>Comments</button>
           {isClicked && <Backdrop click={clickCommentsButton} />}
           {isClicked && (
-            <Posts comments={fetchedComments} Idpost={Idpost} name={name} isLoading={isLoading} />
+            <Posts comments={fetchedComments} Idpost={Idpost} name={name} isLoading={isLoading} setIsLoading={setIsLoading} />
           )}
         </div>
       </div>

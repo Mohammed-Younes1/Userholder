@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import Cards from "../Cards";
 import Pagination from "../Pagination";
 
-
 function PostsList() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedPosts, setLoadedPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [usersObj, setUsersObj] = useState({}); // Declare usersObj state
-const [currentPage,setCurrentPage]=useState(1);
-const [postsPerPage,setPostsPerPage]=useState(6);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(6);
+
   useEffect(() => {
     Promise.all([
       fetch("https://jsonplaceholder.typicode.com/posts").then((response) =>
@@ -53,15 +52,16 @@ const [postsPerPage,setPostsPerPage]=useState(6);
   //   console.log(user)
   //   return user ? user : null;
   // }
-  
-  const lastIndexPost=currentPage*postsPerPage;
-  const firstPostIndex=lastIndexPost-postsPerPage;
-  const currentPosts=loadedPosts.slice(firstPostIndex,lastIndexPost);
-  
+
+  const lastIndexPost = currentPage * postsPerPage;
+  const firstPostIndex = lastIndexPost - postsPerPage;
+  const currentPosts = loadedPosts.slice(firstPostIndex, lastIndexPost);
+  // console.log(setPostsPerPage);
+  // console.log(`currentPage: ${currentPage}  | postsPerPage: ${postsPerPage} | lastIndexPost: ${lastIndexPost} | firstPostIndex: ${firstPostIndex} | currentPosts: ${currentPosts}`)
   return (
     <>
       {isLoading ? (
-        <h1>Loading...</h1>
+        <h1>Loading . . . . . .</h1>
       ) : (
         <ul className="grid grid-cols-1 md:grid-cols-3">
           {currentPosts.map((post) => (
@@ -75,13 +75,19 @@ const [postsPerPage,setPostsPerPage]=useState(6);
               Idpost={post.id}
               // postId={comments.id}
             />
-           
           ))}
-           
         </ul>
+      )}
+      {!isLoading && (
+        <Pagination
+          totalPosts={loadedPosts.length}
+          postsPerPage={postsPerPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
         
       )}
-      <Pagination totalPosts={loadedPosts.length} postsPerPage={postsPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+      
     </>
   );
 }
